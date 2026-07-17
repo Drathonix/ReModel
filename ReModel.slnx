@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ReModel/CakeBuild/CakeBuild.csproj" />
+  <Project Path="ReModel/ReModel/ReModel.csproj" />
+</Solution>

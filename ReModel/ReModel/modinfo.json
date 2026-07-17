@@ -1,0 +1,14 @@
+{
+    "$schema": "https://moddbcdn.vintagestory.at/schema/modinfo.latest.json",
+    "type": "Code",
+    "modid": "remodel",
+    "name": "ReModel",
+    "authors": [
+        "Drathon"
+    ],
+    "description": "Allows changing the player model without modifying their class",
+    "version": "1.0.0",
+    "dependencies": {
+        "game": "1.22.3"
+    }
+}
