@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using ReModel.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
-namespace ReModel.Client.Patches;
+namespace ReModel.Common.Patches;
 
+[HarmonyPatchCategory("vanilla")]
 [HarmonyPatch(typeof(GuiDialogCreateCharacter), "changeClass")]
 
 public class PatchGuiDialogCreateCharacter
@@ -23,9 +25,13 @@ public class PatchGuiDialogCreateCharacter
     /// <param name="dir"></param>
     /// <returns></returns>
   
-    internal static bool Prefix(GuiDialogCreateCharacter __instance, int dir)
+    public static bool Prefix(GuiDialogCreateCharacter __instance, int dir)
     {
         IClientPlayer player = ReModelClient.capi.World.Player;
+        if (!ReModelClient.DidSelect)
+        {
+            return true;
+        }
         if (!player.Entity.WatchedAttributes.GetBool("allowcharselonce") && player.WorldData.CurrentGameMode != EnumGameMode.Creative)
         {
             return false;

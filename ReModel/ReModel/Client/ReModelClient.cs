@@ -12,6 +12,9 @@ public class ReModelClient
 {
 
     public static ICoreClientAPI capi;
+
+    internal static bool DidSelect;
+
     public static void Init(ICoreClientAPI api)
     {
         capi = api;

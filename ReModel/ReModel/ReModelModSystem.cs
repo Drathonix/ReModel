@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 using ReModel.Client;
+using ReModel.Common.Patches;
 using System.Reflection;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 
 namespace ReModel
 {
@@ -19,16 +21,17 @@ namespace ReModel
         public override void Start(ICoreAPI api)
         {
             _harmony = new Harmony(HarmonyId);
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            _harmony.PatchAllUncategorized(assembly);
             if (api.ModLoader.IsModEnabled("playermodellib"))
             {
-                _harmony.PatchCategory(assembly,"playermodellib");
+                PMLPatches.Run(_harmony);
             }
             else
             {
-                _harmony.PatchCategory(assembly,"not_playermodellib");
+                _harmony.Patch(AccessTools.Method(typeof(CharacterSystem),"onCharacterSelection"), AccessTools.Method(typeof(PatchCharacterSystem),"PreOnCharacterSelection"));
+                _harmony.Patch(AccessTools.Method(typeof(GuiDialogCreateCharacter),"changeClass"),AccessTools.Method(typeof(PatchGuiDialogCreateCharacter),"Prefix"));
             }
+            _harmony.Patch(AccessTools.Method(typeof(CharacterSystem),"onCharSelCmd"),null,null,AccessTools.Method(typeof(PatchCharacterSystem),"OnCharSelCmdTranspiler"));
+            _harmony.Patch(AccessTools.Method(typeof(CharacterSystem),"onSelectedState"),null,AccessTools.Method(typeof(PatchCharacterSystem), "PostOnSelectedState"));
             Mod.Logger.Notification("Remodel running on " + api.Side);
         }
 
