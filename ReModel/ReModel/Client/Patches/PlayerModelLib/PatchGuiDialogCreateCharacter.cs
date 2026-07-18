@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using PlayerModelLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
-namespace ReModel.Client.Patches;
+namespace ReModel.Client.Patches.PlayerModelLib;
 
-[HarmonyPatch(typeof(GuiDialogCreateCharacter), "changeClass")]
+[HarmonyPatchCategory("playermodellib")]
+[HarmonyPatch(typeof(GuiDialogCreateCustomCharacter), "ChangeClass")]
 
-public class PatchGuiDialogCreateCharacter
+public class PatchGuiDialogCreateCustomCharacter
 {
     /// <summary>
     /// Prevents the client from changing their class while remodelling.
@@ -23,7 +25,7 @@ public class PatchGuiDialogCreateCharacter
     /// <param name="dir"></param>
     /// <returns></returns>
   
-    internal static bool Prefix(GuiDialogCreateCharacter __instance, int dir)
+    internal static bool Prefix(GuiDialogCreateCustomCharacter __instance, int dir)
     {
         IClientPlayer player = ReModelClient.capi.World.Player;
         if (!player.Entity.WatchedAttributes.GetBool("allowcharselonce") && player.WorldData.CurrentGameMode != EnumGameMode.Creative)

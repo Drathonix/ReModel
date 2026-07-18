@@ -10,12 +10,12 @@ namespace ReModel.Client.Patches;
 
 [HarmonyPatch(typeof(CharacterSystem), "onCharSelCmd")]
 
-public class PatchCharacterSystemClient
+public class PatchCharacterSystem
 {
     internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return Transpilers.MethodReplacer(instructions,
-            typeof(TreeAttribute).GetMethod("GetBool"), typeof(PatchCharacterSystemClient).GetMethod("OverrideGetBool"));
+            typeof(TreeAttribute).GetMethod("GetBool"), typeof(PatchCharacterSystem).GetMethod("OverrideGetBool"));
     }
 
     /// <summary>
@@ -25,9 +25,8 @@ public class PatchCharacterSystemClient
     /// <param name="key"></param>
     /// <param name="defaultValue"></param>
     /// <returns></returns>
-    public static bool OverrideGetBool(SyncedTreeAttribute __instance, string key)
+    public static bool OverrideGetBool(SyncedTreeAttribute __instance, string key, bool defaultValue)
     {
-        Console.WriteLine("Called");
         return true;
     }
 }

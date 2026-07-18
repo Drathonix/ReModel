@@ -8,6 +8,7 @@ using Vintagestory.GameContent;
 
 namespace ReModel.Common.Patches;
 
+[HarmonyPatchCategory("not_playermodellib")]
 [HarmonyPatch(typeof(CharacterSystem), "onCharacterSelection")]
 public class PatchCharacterSystem
 {    
